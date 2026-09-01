@@ -1,0 +1,32 @@
+name: Trendyol Hepsiburada Sync
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Requests kur
+        run: pip install requests
+
+      - name: Senkronizasyonu çalıştır
+        env:
+          TY_SUPPLIER_ID: ${{ secrets.TY_SUPPLIER_ID }}
+          TY_API_KEY: ${{ secrets.TY_API_KEY }}
+          TY_API_SECRET: ${{ secrets.TY_API_SECRET }}
+          HB_MERCHANT_ID: ${{ secrets.HB_MERCHANT_ID }}
+          HB_SECRET_KEY: ${{ secrets.HB_SECRET_KEY }}
+          HB_USERNAME: ${{ secrets.HB_USERNAME }}
+        run: python sync.py
